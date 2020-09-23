@@ -1,0 +1,31 @@
+{
+  "name": "tunnel2local",
+  "version": "1.0.9",
+  "slug": "tunnel2local",
+  "description": "Browser the Home Assistant From Internet",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "url": "https://github.com/zhujisheng/hassio-addons/tree/master/tunnel2local",
+  "startup": "before",
+  "boot": "auto",
+  "image": "zhujisheng/{arch}-addon-tunnel2local",
+  "options": {
+    "frp_server": "hachinafrps.duckdns.org",
+    "frp_server_port": 7000,
+    "frp_token": "5da55d512161ea774cb56d72913a3aed",
+    "local_host": "homeassistant",
+    "local_port": 8123,
+    "tunnel_type": "http",
+    "http_domain": "hachina.802154.com"
+  },
+  "schema": {
+    "frp_server": "str",
+    "frp_server_port": "port",
+    "frp_token": "str",
+    "local_host": "str",
+    "local_port": "port",
+    "tunnel_type": "list(tcp|http)",
+    "http_domain": "str?",
+    "http_subdomain_host": "str?",
+    "tcp_remote_port": "port?"
+  }
+}

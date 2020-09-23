@@ -1,0 +1,39 @@
+{
+  "name": "Voice Assistant",
+  "version": "1.0.13",
+  "slug": "voice_assistant",
+  "description": "a voice assistant",
+  "arch": ["armhf", "armv7", "aarch64", "amd64"],
+  "audio": true,
+  "homeassistant_api": true,
+  "startup": "application",
+  "boot": "auto",
+  "map": ["share:rw"],
+  "image": "zhujisheng/{arch}-addon-voice_assistant",
+  "options": {
+    "voice_assistant": [{
+      "input_device": "local_default",
+      "output_entity_id": "all",
+      "tts_service": "tts.google_translate_say",
+      "model_file": "/hey-mycroft.pb",
+      "threshold": 0.4,
+      "show_match_level_realtime": false,
+      "op_waken": "voice_assistant.waken",
+      "op_recvd": "voice_assistant.recvd",
+      "op_react": "voice_assistant.react"
+    }]
+  },
+  "schema": {
+    "voice_assistant": [{
+      "input_device": "str",
+      "output_entity_id": "str",
+      "tts_service": "str",
+      "model_file": "str",
+      "threshold": "float(0,1)",
+      "show_match_level_realtime": "bool",
+      "op_waken": "str",
+      "op_recvd": "str",
+      "op_react": "str"
+    }]
+  }
+}

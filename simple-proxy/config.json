@@ -1,0 +1,20 @@
+{
+  "name": "Simple Proxy",
+  "version": "1.0.5",
+  "slug": "simple_proxy",
+  "description": "Simple Proxy to visit the world outside the Great Wall",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "startup": "before",
+  "boot": "auto",
+  "host_network": false,
+  "ports": {
+    "7088/tcp": 7088
+  },
+  "privileged": ["NET_ADMIN"],
+  "url": "https://github.com/zhujisheng/hassio-addons/",
+  "image": "zhujisheng/{arch}-addon-simple_proxy",
+  "options": {
+  },
+  "schema": {
+  }
+}
