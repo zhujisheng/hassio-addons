@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import json, atexit, time, wave, io, subprocess, re, socket
-import dns.resolver
+import json, time, wave, io, subprocess, re, socket, sys, os
+#import dns.resolver
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -62,7 +62,7 @@ def get_input_stream( name ):
   elif(re.match(r'^.*:\d+$',name)):
     stream = SocketReadStream(name)
   else:
-    print("configuration input_device format error",flush=True)
+    print("configuration microphone format error",flush=True)
     stream = None
   return stream
 
@@ -163,46 +163,51 @@ def recognize_google_cn(flac_data, language="zh-CN", pfilter=0, show_all=False):
         return best_hypothesis["transcript"]
 
 
-def handle_predictions( va ):
+def handle_predictions( va_config, va_index ):
   """Continuously check Precise process output"""
-  input_device = va["input_device"]
-  output_entity_id = va["output_entity_id"]
-  model_file = va["model_file"]
-  threshold = va["threshold"]
-  show_match_level_realtime = va["show_match_level_realtime"]
-  op_waken = va["op_waken"]
-  op_recvd = va["op_recvd"]
-  op_react = va["op_react"]
-  tts_service = va["tts_service"]
-  matches[input_device] = []
+  microphone = va_config["microphone"]
+  wake_word_model = va_config["wake_word_model"]
+  threshold = va_config["threshold"]
+  show_match_level_realtime = va_config["show_match_level_realtime"]
+  on_wake = va_config["on_wake"]
+  on_command_stage1 = va_config["on_command_stage1"]
+  on_command_stage2 = va_config["on_command_stage2"]
+  key = "/".join([microphone, wake_word_model, str(threshold), str(va_index)])
+  matches[key] = []
 
-  stream_in = get_input_stream(input_device)
+  stream_in = get_input_stream(microphone)
   detector = TriggerDetector(CHUCK_SIZE, 1.0-threshold)
   engine = PreciseEngine('/precise-engine/precise-engine',
-                         model_file,
+                         wake_word_model,
                          chunk_size = CHUCK_SIZE)
-  func_waken = get_func( op_waken )
-  func_recvd = get_func( op_recvd )
-  func_react = get_func( op_react )
+  func_on_wake = get_func( on_wake )
+  func_on_command_stage1 = get_func( on_command_stage1 )
+  func_on_command_stage2 = get_func( on_command_stage2 )
   engine.start()
 
-  while True:
-    chunk = stream_in.read(CHUCK_SIZE)
-    prob = engine.get_prediction(chunk)
-    if show_match_level_realtime:
-      matches[input_device].append(prob)
-    if detector.update(prob):
-      print(input_device, "waked", flush=True)
-      func_waken(tts_service, output_entity_id)
-      audio = stream_in.read(CHUCK_SIZE*CHUCKS_TO_READ)
-      func_recvd(tts_service, output_entity_id)
-      wav_data = get_wav_data( audio )
-      flac_data = get_flac_data(wav_data)
-      speech_in = recognize_google_cn(flac_data)
-      print(input_device, "catch the input speech: ", speech_in, flush=True)
-      func_react(speech_in, tts_service, output_entity_id)
+  try:
+    while True:
+      chunk = stream_in.read(CHUCK_SIZE)
+      prob = engine.get_prediction(chunk)
+      if show_match_level_realtime:
+        matches[key].append(prob)
+      if detector.update(prob):
+        print(microphone, "waked", flush=True)
+        func_on_wake(va_config)
+        audio = stream_in.read(CHUCK_SIZE*CHUCKS_TO_READ)
+        func_on_command_stage1(va_config)
+        wav_data = get_wav_data( audio )
+        flac_data = get_flac_data(wav_data)
+        speech_in = recognize_google_cn(flac_data)
+        print(microphone, "catch the input speech: ", speech_in, flush=True)
+        func_on_command_stage2(speech_in, va_config)
+  except Exception as e:
+    print("crashed!!!")
+    print(e)
+    os._exit(1)
 
 
+sys.path.insert(0,'/share/voice_assistant')
 
 CHUCK_SIZE = 2048
 CHUCKS_TO_READ = int(4.5*2*16000/2048)
@@ -212,10 +217,12 @@ with open(CONFIG_PATH) as fp:
   config = json.load(fp)
 
 matches = {}
+va_index = 1
 for va in config["voice_assistant"]:
   thread = Thread(target=handle_predictions,
-                  args=(va,),
+                  args=(va, va_index,),
                   daemon=True)
+  va_index += 1
   thread.start()
 
 

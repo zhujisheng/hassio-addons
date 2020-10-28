@@ -1,6 +1,6 @@
 {
   "name": "Voice Assistant",
-  "version": "1.0.13",
+  "version": "2.0.1",
   "slug": "voice_assistant",
   "description": "a voice assistant",
   "arch": ["armhf", "armv7", "aarch64", "amd64"],
@@ -8,32 +8,32 @@
   "homeassistant_api": true,
   "startup": "application",
   "boot": "auto",
-  "map": ["share:rw"],
+  "map": ["share:rw","config:rw","media:rw"],
   "image": "zhujisheng/{arch}-addon-voice_assistant",
   "options": {
     "voice_assistant": [{
-      "input_device": "local_default",
-      "output_entity_id": "all",
-      "tts_service": "tts.google_translate_say",
-      "model_file": "/hey-mycroft.pb",
+      "microphone": "local_default",
+      "wake_word_model": "/hey-mycroft.pb",
       "threshold": 0.4,
       "show_match_level_realtime": false,
-      "op_waken": "voice_assistant.waken",
-      "op_recvd": "voice_assistant.recvd",
-      "op_react": "voice_assistant.react"
+      "on_wake": "process_none.on_wake",
+      "on_command_stage1": "process_none.on_command",
+      "on_command_stage2": "process_none.on_react",
+      "media_player": "all",
+      "tts_service": "tts.google_translate_say"
     }]
   },
   "schema": {
     "voice_assistant": [{
-      "input_device": "str",
-      "output_entity_id": "str",
-      "tts_service": "str",
-      "model_file": "str",
+      "microphone": "str",
+      "wake_word_model": "str",
       "threshold": "float(0,1)",
       "show_match_level_realtime": "bool",
-      "op_waken": "str",
-      "op_recvd": "str",
-      "op_react": "str"
+      "on_wake": "str",
+      "on_command_stage1": "str",
+      "on_command_stage2": "str",
+      "media_player": "str",
+      "tts_service": "str"
     }]
   }
 }
