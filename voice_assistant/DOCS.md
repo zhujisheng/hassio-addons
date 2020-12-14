@@ -252,7 +252,7 @@ HomeAssistant中的tts的服务名，例如：`tts.google_translate_say`或`tts.
 
 - `play_audio_file( media_player, filename )`
 
-  播放声音媒体文件（ding&dong），媒体文件放置在`配置目录/local/voice_assistant/`目录中
+  播放声音媒体文件（ding&dong），媒体文件放置在`/config/www/voice_assistant/`目录中
 
 - `intent_process( speech_in )`
 

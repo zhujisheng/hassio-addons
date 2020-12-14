@@ -102,23 +102,6 @@ def recognize_google_cn(flac_data, language="zh-CN", pfilter=0, show_all=False):
 
         key = "AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
 
-#        server = 'www.google.com.cn'
-#        resolver = dns.resolver.Resolver(configure=False)
-#        resolver.nameservers=['8.8.8.8']
-#        google_ip=resolver.query(server,'A')[0].address
-#
-#        url = "http://{}/speech-api/v2/recognize?{}".format(
-#                  google_ip,
-#                  urlencode({
-#                  "client": "chromium",
-#                  "lang": language,
-#                  "key": key,
-#                  "pFilter": pfilter
-#                  }))
-#        request = Request(url,
-#                          origin_req_host=server,
-#                          data=flac_data,
-#                          headers={"Content-Type": "audio/x-flac; rate=16000"})
         url = "http://www.google.cn/speech-api/v2/recognize?{}".format(urlencode({
                   "client": "chromium",
                   "lang": language,
