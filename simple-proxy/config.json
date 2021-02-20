@@ -1,10 +1,10 @@
 {
   "name": "Simple Proxy",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "slug": "simple_proxy",
   "description": "Simple Proxy to visit the world outside the Great Wall",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
-  "startup": "before",
+  "startup": "services",
   "boot": "auto",
   "host_network": false,
   "ports": {
