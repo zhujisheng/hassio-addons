@@ -1,0 +1,17 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: WireGuard
+# Stops WireGuard
+# ==============================================================================
+declare interface
+
+bashio::log.info "Stopping WireGuard..."
+
+# Get interface
+interface="wg0"
+if bashio::config.has_value "interface_name"; then
+    interface=$(bashio::config "interface_name")
+fi
+
+# Run the WireGuard
+exec wg-quick down "${interface}"

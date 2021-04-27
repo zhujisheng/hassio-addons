@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Add-on: WireGuard
+# Runs WireGuard
+# ==============================================================================
+declare interface
+
+s6-svc -O /var/run/s6/services/wireguard
+
+bashio::log.info "Starting WireGuard..."
+
+# Get interface
+interface="wg0"
+if bashio::config.has_value "interface_name"; then
+    interface=$(bashio::config "interface_name")
+fi
+
+# Run the WireGuard
+exec wg-quick up "${interface}"
