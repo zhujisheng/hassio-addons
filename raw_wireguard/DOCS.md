@@ -11,12 +11,10 @@ The add-on's configuration looks like this:
 interface:
   PrivateKey: yAnz5TF+lXXJte14tji3zlMNq+hd2rYUIgJBgB3fBmk=
   Address: 172.27.66.8/24
-  PostUp: "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -j MASQUERADE"
-  PostDown: "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -s 192.168.3.0/24 -j MASQUERADE"
 peers:
   - PublicKey: rJ0ZpE/paYS1StWstO78kpGQV4G3WmjmWY93lA7bK1I=
     EndPoint: my_vpn_server:51820
-    AllowedIPs: 0.0.0.0/0
+    AllowedIPs: 172.27.66.3/32
   - PublicKey: QNLXV8lrsPnKOd011DO8g5DWyad6iHJDSVOD6yOqjiE=
     EndPoint: my_vpn_server2:51820
     AllowedIPs: 172.27.66.5/32
@@ -94,8 +92,9 @@ peers:
     Address: 172.27.66.1/24
   peers:
     - PublicKey: the_vpn_server_public_key
-      EndPoint: x.x.x.x:51820
+      EndPoint: "x.x.x.x:51820"
       PersistentKeepalive: 25
+      AllowedIPs: "172.27.66.2/32"
   ```
 
   *`x.x.x.x` is the IP of VPN Server*
