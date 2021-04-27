@@ -21,6 +21,7 @@ fi
 # Comment out the code which will crash
 sed -i 's/^[^#].*sysctl -q net.ipv4.conf.all.src_valid_mark=1*/#&/g' /usr/bin/wg-quick
 
+set +o errexit
 rp_filter1=$(sysctl net.ipv4.conf | grep "\.rp_filter = 1")
 src_valid_mark=$(sysctl -n net.ipv4.conf.all.src_valid_mark)
 if [[ -n "${rp_filter1}" && ${src_valid_mark} = "0" ]] ; then
@@ -33,6 +34,7 @@ if [[ -n "${rp_filter1}" && ${src_valid_mark} = "0" ]] ; then
     bashio::log.warning "may lead to traffic block."
     bashio::log.warning
 fi
+set -o errexit
 
 # Get interface and config file location
 interface="wg0"

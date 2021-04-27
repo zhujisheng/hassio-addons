@@ -1,6 +1,6 @@
 {
   "name": "Raw WireGuard",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "slug": "rawwireguard",
   "description": "Fast, modern, secure VPN tunnel",
   "url": "https://github.com/zhujisheng/hassio-addons/raw_wireguard",
