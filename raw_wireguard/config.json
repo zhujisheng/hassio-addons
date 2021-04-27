@@ -1,0 +1,66 @@
+{
+  "name": "Raw WireGuard",
+  "version": "0.1.0",
+  "slug": "rawwireguard",
+  "description": "Fast, modern, secure VPN tunnel",
+  "url": "https://github.com/zhujisheng/hassio-addons/raw_wireguard",
+  "arch": [
+    "aarch64",
+    "amd64",
+    "armhf",
+    "armv7",
+    "i386"
+  ],
+  "init": false,
+  "privileged": [
+    "NET_ADMIN"
+  ],
+  "devices": [
+    "/dev/net/tun"
+  ],
+  "host_network": true,
+  "startup": "once",
+  "boot": "manual",
+  "options": {
+    "interface": {
+      "PrivateKey": "yAnz5TF+lXXJte14tji3zlMNq+hd2rYUIgJBgB3fBmk=",
+      "Address": "172.27.66.8/24",
+      "PostUp": "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -j MASQUERADE; ip -4 route add x.x.x.x/32 via 192.168.1.1 dev wlan0",
+      "PostDown": "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -s 192.168.1.0/24 -j MASQUERADE; ip -4 route del x.x.x.x/32 via 192.168.1.1 dev wlan0"
+    },
+    "peers": [
+      {
+        "PublicKey": "rJ0ZpE/paYS1StWstO78kpGQV4G3WmjmWY93lA7bK1I=",
+        "EndPoint": "my_vpn_server:51820",
+        "AllowedIPs": "0.0.0.0/1, 128.0.0.0/1"
+      }
+    ]
+  },
+  "schema": {
+    "interface_name": "str?",
+    "interface": {
+      "PrivateKey": "password",
+      "ListenPort": "port?",
+      "FwMark": "str?",
+      "Address": "str?",
+      "DNS": "str?",
+      "MTU": "int?",
+      "Table": "str?",
+      "PreUp": "str?",
+      "PostUp": "str?",
+      "PreDown": "str?",
+      "PostDown": "str?",
+      "SaveConfig": "bool?"
+    },
+    "peers": [
+      {
+        "PublicKey": "str",
+        "PreSharedKey": "str?",
+        "AllowedIPs": "str?",
+        "EndPoint": "str?",
+        "PersistentKeepalive": "int?"
+      }
+    ]
+  },
+  "image": "zhujisheng/{arch}-addon-rawwireguard"
+}
