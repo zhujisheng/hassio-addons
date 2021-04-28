@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "slug": "rawwireguard",
   "description": "Fast, modern, secure VPN tunnel",
-  "url": "https://github.com/zhujisheng/hassio-addons/raw_wireguard",
+  "url": "https://github.com/zhujisheng/hassio-addons/tree/master/raw_wireguard",
   "arch": [
     "aarch64",
     "amd64",

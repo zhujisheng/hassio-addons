@@ -184,8 +184,8 @@ After the add-on started, you can ping `172.27.66.1` from the VPN server, and pi
   ```yaml
   interface:
     ......
-    PostUp: "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -s 192.168.3.0/24 -j MASQUERADE"
-    PostDown: "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -s 192.168.3.0/24 -j MASQUERADE"
+    PostUp: "iptables -A FORWARD -i %i -j ACCEPT; iptables -A FORWARD -o %i -j ACCEPT; iptables -t nat -A POSTROUTING -o %i -j MASQUERADE"
+    PostDown: "iptables -D FORWARD -i %i -j ACCEPT; iptables -D FORWARD -o %i -j ACCEPT; iptables -t nat -D POSTROUTING -o %i -j MASQUERADE"
   peers:
     - ......
   ```
