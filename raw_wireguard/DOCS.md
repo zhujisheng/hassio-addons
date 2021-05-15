@@ -27,7 +27,7 @@ peers:
 
 - **Option**: `interface`
 
-  The `[Interface]` item in WireGuard configuration file.
+  The `[Interface]` section in WireGuard configuration file.
 
   It includes:
 
@@ -46,7 +46,7 @@ peers:
 
 - **Option**: `peers`
 
-  The `[Peer]` items in WireGuard configuration file.
+  The `[Peer]` sections in WireGuard configuration file.
 
   It includes:
 
@@ -137,7 +137,7 @@ After the add-on started, you can ping `172.27.66.1` from the VPN server, and pi
 
   *If you set `AllowedIPs: "0.0.0.0/0"`, it's suggested to run `sysctl net.ipv4.conf.all.src_valid_mark=1` on the host. Or in some very rare cases, when `rp_filter` is set to `1` in the host network, network may block.*
 
-  *This is because `sysctl -q net.ipv4.conf.all.src_valid_mark=1` has been commented out in `wg-quick` script in this add-on, which should run when when `AllowedIPs: "*/0"` configged. `--privileged` parameter is not provided by HomeAssistant Supervisor add-on's configuration, and without which, setting system parameter by `sysctl` leads to error in docker containers.*
+  *This is because `sysctl -q net.ipv4.conf.all.src_valid_mark=1` has been commented out in `wg-quick` script in this add-on, which should run when `AllowedIPs: "*/0"` configged. `--privileged` parameter is not provided by HomeAssistant Supervisor add-on's configuration, and without which, setting system parameter by `sysctl` leads to error in docker containers.*
 
   *Another way to avoid `AllowedIPs: "0.0.0.0/0"` is `AllowdIPs: "0.0.0.0/1, 128.0.0.0/1"`, which means the whole IP addresses also. However, in such configuration, you will have to add route manually to prevent endless loop of the VPN package wrapping. The configuration example shows below:*
 
@@ -154,7 +154,7 @@ After the add-on started, you can ping `172.27.66.1` from the VPN server, and pi
 
 - VPN Server Configuration
 
-  The VPN Server must set `ip_forward` and NAT.
+  The VPN Server must have `ip_forward` and NAT configured.
 
   + `ip_forward`
 
@@ -165,7 +165,7 @@ After the add-on started, you can ping `172.27.66.1` from the VPN server, and pi
     ```
   + NAT
 
-    You can open NAT in the wireguard's `PostUp` script, or just run it on the server.
+    You can open NAT in the wireguard's `PostUp` script, or run it by any other means on the server.
 
     ```
     [Interface]
