@@ -82,4 +82,13 @@ subdomain_host = xxxx.yyyy.com
 
 1. 缺省配置仅对应测试服务，不保证服务质量
 2. add-on中使用的frp客户端版本为0.32.1，如果你自己搭建服务器，建议使用对应版本
-3. 启动后，供Internet访问的URL，可以在log中查看
+3. 启动后，供Internet访问的URL，可以在Add-on的日志中查看
+4. 最新版本HomeAssistant中，如果使用代理，需要在`configuration.yaml`中增加如下配置：
+
+    ```yaml
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 172.30.33.0/24
+    ```
+

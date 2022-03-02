@@ -19,7 +19,7 @@
     "/dev/net/tun"
   ],
   "host_network": true,
-  "startup": "once",
+  "startup": "services",
   "boot": "manual",
   "options": {
     "interface": {
