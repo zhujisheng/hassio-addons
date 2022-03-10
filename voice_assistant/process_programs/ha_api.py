@@ -7,8 +7,9 @@ headers = {
     "content-type": "application/json",
 }
 
-discovery_info = get("http://supervisor/core/api/discovery_info", headers=headers).json()
+discovery_info = get("http://supervisor/core/api/config", headers=headers).json()
 ha_base_url = discovery_info["internal_url"] or discovery_info["external_url"]
+ha_base_url = ha_base_url.rstrip('/')
 
 def get_state(entity_id, attribute=None):
   """获得HomeAssistant中某个实体的状态或者某个属性值"""
