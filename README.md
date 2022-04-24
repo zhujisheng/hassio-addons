@@ -2,6 +2,10 @@
 
 some addons for hassio
 
+- [Raw WireGuard](https://github.com/zhujisheng/hassio-addons/tree/master/raw_wireguard):
+
+  WireGuard VPN
+
 - [mycroft-precise](https://github.com/zhujisheng/hassio-addons/tree/master/mycroft-precise):
 
   声音唤醒——当识别到某个声音时，生成一条HomeAssistant中的事件

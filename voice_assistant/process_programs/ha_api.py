@@ -7,9 +7,9 @@ headers = {
     "content-type": "application/json",
 }
 
-discovery_info = get("http://supervisor/core/api/config", headers=headers).json()
-ha_base_url = discovery_info["internal_url"] or discovery_info["external_url"]
-ha_base_url = ha_base_url.rstrip('/')
+# discovery_info = get("http://supervisor/core/api/config", headers=headers).json()
+# ha_base_url = discovery_info["internal_url"] or discovery_info["external_url"]
+# ha_base_url = ha_base_url.rstrip('/')
 
 def get_state(entity_id, attribute=None):
   """获得HomeAssistant中某个实体的状态或者某个属性值"""
@@ -45,7 +45,8 @@ def play_tts( speech_text, tts, media_player ):
 def play_audio_file( media_player, filename ):
   """HomeAssistant API调用: 播放媒体文件（ding&dong）。"""
   data = { "entity_id": media_player,
-           "media_content_id": f"{ha_base_url}/local/voice_assistant/{filename}",
+#           "media_content_id": f"{ha_base_url}/local/voice_assistant/{filename}",
+           "media_content_id": f"media-source://media_source/local/voice_assistant/{filename}",
            "media_content_type": "music"
          }
   return post_service("media_player.play_media", data=data)
